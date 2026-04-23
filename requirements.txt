@@ -1,10 +1,12 @@
 streamlit
 openai
 python-dotenv
-faiss-cpu
 pandas
 pypdf
 sentence-transformers
 numpy
 torch
 transformers
+chromadb
+langchain
+scikit-learn
