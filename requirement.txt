@@ -1,10 +1,10 @@
 streamlit
-pandas
-numpy
-python-dotenv
 openai
-sentence-transformers
+python-dotenv
 faiss-cpu
+pandas
 pypdf
-scikit-learn
-rank-bm25
+sentence-transformers
+numpy
+torch
+transformers
