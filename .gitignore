@@ -1,0 +1,8 @@
+venv/
+venv310/
+__pycache__/
+.env
+*.pyc
+*.pyo
+*.pyd
+vector_store/*.index
