@@ -7,4 +7,5 @@ pypdf
 sentence-transformers
 numpy
 torch
+torchvision
 transformers
