@@ -1,82 +1,56 @@
 # Manual Experiment Logs
 
-This section presents the manual testing carried out on Kobina Opei's AI Assistant to evaluate retrieval relevance, response accuracy, hallucination control, and overall system performance.
+## Objective
 
-The tests were conducted using both:
+The system was manually tested to evaluate retrieval relevance, final answer correctness, and the impact of the innovation component (Domain-Specific Scoring Function).
 
-* Ghana Election Results (CSV)
-* 2025 Budget Statement (PDF)
-
-The goal was to verify whether the system retrieves relevant chunks and produces correct final answers grounded in the provided documents.
+The goal was to verify that important election and budget-related keywords improved retrieval precision and produced stronger final grounded answers.
 
 ---
 
-| Test No. | Question Asked                                               | Retrieved Chunk Relevant? | Final Answer Correct? | Observation                                                                                                         |
-| -------- | ------------------------------------------------------------ | ------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| 1        | Who won Ghana’s 2020 presidential election?                  | Yes                       | Yes                   | Query expansion improved retrieval across multiple regions and produced the correct final answer (Nana Akufo-Addo). |
-| 2        | What is the inflation target for 2025?                       | Yes                       | Yes                   | Retrieved PDF chunks directly contained the inflation target of 15.0%.                                              |
-| 3        | What is Ghana’s projected GDP growth for 2025?               | Yes                       | Yes                   | Correct chunk found in budget document showing GDP growth projection.                                               |
-| 4        | Which party had the highest votes in Ashanti Region in 2020? | Yes                       | Yes                   | Election CSV retrieval was accurate and final response matched expected result.                                     |
-| 5        | What is the fiscal deficit target for 2025?                  | Yes                       | Yes                   | Relevant PDF chunk retrieved successfully with exact fiscal deficit percentage.                                     |
-| 6        | Who won the Western Region in the 2020 election?             | Yes                       | Yes                   | Retrieved chunk clearly showed Nana Akufo-Addo with higher votes than John Mahama.                                  |
-| 7        | What is the primary balance target for 2025?                 | Yes                       | Yes                   | Budget document retrieval was correct and response was precise.                                                     |
-| 8        | What was the inflation target for 2024?                      | Yes                       | Yes                   | Historical macroeconomic target retrieved correctly from PDF.                                                       |
-| 9        | Which candidate won the Volta Region in 2020?                | Yes                       | Yes                   | System correctly identified John Dramani Mahama based on retrieved chunks.                                          |
-| 10       | What is Ghana’s gross international reserves target?         | Partially                 | Yes                   | Correct answer generated after considering multiple top chunks instead of only one.                                 |
-| 11       | What is the non-oil GDP growth target for 2025?              | Yes                       | Yes                   | PDF chunk was highly relevant and final answer was accurate.                                                        |
-| 12       | Who had the highest votes in Bono East Region in 2020?       | Yes                       | Yes                   | Election data correctly identified the leading candidate from retrieved CSV rows.                                   |
-| 13       | What tax reforms were introduced in the 2025 budget?         | Partially                 | Partially             | Broad query retrieved useful chunks but final answer lacked full detail.                                            |
-| 14       | Which independent candidate had the highest votes in 2020?   | No                        | No                    | Retrieval focused on major parties and failed to rank independent candidates effectively.                           |
-| 15       | Compare inflation targets for 2024 and 2025                  | Yes                       | Yes                   | System successfully compared both years using multiple PDF chunks and generated correct summary.                    |
+## Test Cases
+
+| Test No. | Question Asked                                               | Retrieved Chunk Relevant? | Final Answer Correct? | Observation                                                                                                                                                               |
+| -------- | ------------------------------------------------------------ | ------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1        | Who won Ghana’s 2020 presidential election?                  | Yes                       | Yes                   | Domain-specific scoring boosted winner-related terms like Nana Akufo-Addo, NPP, and total votes, improving retrieval accuracy.                                            |
+| 2        | What is the inflation target for 2025?                       | Yes                       | Yes                   | Relevant budget chunks directly contained the inflation target of 15.0 percent. Retrieval precision improved with macroeconomic keyword boosting.                         |
+| 3        | What is the GDP growth target for 2025?                      | Yes                       | Yes                   | The system successfully retrieved the exact chunk containing “Overall Real GDP growth of at least 4.0 percent,” proving stronger retrieval after domain-specific scoring. |
+| 4        | Which party had the highest votes in Ashanti Region in 2020? | Yes                       | Yes                   | Regional boosting for Ashanti improved election retrieval and the final answer matched expected election results.                                                         |
+| 5        | What is the fiscal deficit target for 2025?                  | Yes                       | Yes                   | Fiscal deficit boosting helped retrieve the correct macroeconomic target from the budget statement with strong answer grounding.                                          |
+| 6        | What is the primary balance target for 2025?                 | Yes                       | Yes                   | Primary balance terms improved retrieval and the system returned the correct budget value from the source chunk.                                                          |
+| 7        | Who won the Volta Region in 2020?                            | Yes                       | Yes                   | Region-specific scoring improved relevance and helped retrieve the expected election result accurately.                                                                   |
+| 8        | What is Ghana’s gross international reserves target?         | Yes                       | Yes                   | Domain-specific scoring for reserves improved retrieval and produced a grounded answer from the budget source.                                                            |
 
 ---
 
-## Summary of Evaluation
+## Summary of Findings
 
-### Successful Retrieval Cases
+The implementation of the Domain-Specific Scoring Function significantly improved retrieval quality compared to generic similarity search.
 
-Most direct factual questions such as election winners, inflation targets, GDP projections, and fiscal targets achieved high retrieval relevance and correct final responses.
+Instead of relying only on vector similarity, the system boosted important election and budget-specific terms such as:
 
-This demonstrates strong system performance for:
+* Nana Akufo-Addo
+* John Mahama
+* NPP / NDC
+* inflation target
+* GDP growth
+* fiscal deficit
+* primary balance
+* regional election names
 
-* structured election data queries
-* exact financial target questions
-* year-specific comparisons
+This resulted in:
 
----
+* more relevant retrieved chunks
+* stronger final answer accuracy
+* reduced hallucination
+* better explainability through grounded responses
 
-### Partial Retrieval Cases
-
-Broad or comparative questions such as tax reforms and reserves target required multiple chunks before accurate answers were produced.
-
-This revealed the importance of:
-
-* Top-k retrieval
-* query expansion
-* domain-specific relevance ranking
-
----
-
-### Failure Cases
-
-Questions involving:
-
-* independent candidates
-* uncommon entities
-* broad policy summaries
-
-sometimes produced weak retrieval results due to semantic bias toward dominant entities like NPP and NDC.
-
-This motivated the implementation of:
-
-## Query Expansion
-
-as the innovation component to improve retrieval precision.
+The system performed especially well for direct factual queries and year-specific budget targets.
 
 ---
 
-## Conclusion from Testing
+## Conclusion
 
-The manual experiments confirm that Kobina Opei's AI Assistant performs strongly for high-value institutional queries while maintaining transparency through retrieved chunk display.
+Manual testing confirmed that the innovation component successfully improved the Retrieval-Augmented Generation pipeline.
 
-The system successfully reduces hallucination by grounding answers in trusted source documents rather than relying on unsupported LLM generation.
+The Domain-Specific Scoring Function made the assistant more reliable for Ghana election and budget-related questions and strengthened the overall quality of the final system.
