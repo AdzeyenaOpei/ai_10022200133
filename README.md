@@ -1,256 +1,187 @@
 # Kobina Opei's AI Assistant
 
-## Project Overview
+## Academic City University RAG Project
 
-Kobina Opei's AI Assistant is an intelligent Retrieval-Augmented Generation (RAG) system developed to provide accurate, context-aware, and reliable answers from trusted institutional documents rather than relying on generic internet knowledge.
+Kobina Opei's AI Assistant is a Retrieval-Augmented Generation (RAG) system built for Academic City University to provide intelligent answers from trusted institutional documents.
 
-The system retrieves information from:
+The system allows users to query:
 
-* Structured CSV data (Ghana Election Results)
-* Unstructured PDF documents (2025 Budget Statement)
+* Ghana 2020 Presidential Election Results (CSV)
+* 2025 Ghana Budget Statement (PDF)
 
-and uses Large Language Models (LLMs) to generate grounded and explainable responses.
-
-This project was developed as part of:
-
-**CS4241 – Introduction to Artificial Intelligence**
-Academic City University
-Faculty of Computational Sciences and Informatics
+Instead of relying on general AI responses, the application retrieves relevant document chunks using vector search (FAISS) and generates grounded responses using OpenAI.
 
 ---
 
-## Problem Statement
+## Project Objectives
 
-Traditional AI chatbots and general-purpose Large Language Models (LLMs) often generate hallucinated or unreliable answers because they respond without retrieving information from trusted local data sources.
+The goal of this project is to:
 
-This project solves that problem by implementing a custom RAG pipeline that:
-
-* retrieves relevant information first
-* uses trusted institutional documents
-* reduces hallucination
-* improves response accuracy
-* provides explainable outputs through retrieved chunks
+* Reduce manual searching through large documents
+* Improve decision-making using trusted source documents
+* Minimize hallucination in AI-generated responses
+* Provide transparent answers by showing retrieved chunks
+* Demonstrate practical Retrieval-Augmented Generation (RAG)
 
 ---
 
-## Objectives
+## Key Features
 
-The project aims to:
+### Query Input
 
-* preprocess CSV and PDF datasets
-* implement semantic chunking and retrieval
-* generate embeddings using Sentence Transformers
-* store vectors using FAISS
-* perform Top-k similarity search
-* construct prompts manually
-* reduce hallucinations using prompt engineering
-* build a professional Streamlit interface
-* deploy the system to the cloud
-* introduce a novelty feature for improved retrieval quality
-
----
-
-## Datasets Used
-
-### 1. Ghana Election Results (CSV)
-
-Contains structured election data including:
-
-* year
-* presidential candidates
-* party affiliations
-* votes obtained
-* winners
-
-Used for answering election-related questions.
-
-Example:
+Users can ask natural language questions such as:
 
 * Who won Ghana’s 2020 presidential election?
-
----
-
-### 2. 2025 Budget Statement (PDF)
-
-Contains financial and economic policy information such as:
-
-* inflation targets
-* GDP projections
-* fiscal deficit
-* tax reforms
-* national budget priorities
-
-Used for answering financial and policy-related questions.
-
-Example:
-
 * What is the inflation target for 2025?
+* What is the GDP growth target for 2025?
+* What is the fiscal deficit target?
+
+### Retrieved Chunk Display
+
+The system displays the exact document chunks used to generate the final answer.
+
+This improves:
+
+* transparency
+* trust
+* explainability
+* retrieval validation
+
+### Final AI Response
+
+After retrieval, the system generates a final grounded answer using OpenAI.
+
+### Persistent Chat Interface
+
+The application maintains conversation history for a smooth user experience.
 
 ---
 
-## System Architecture
+## Innovation Component (Part G)
 
-The system follows the standard RAG pipeline:
+### Domain-Specific Scoring Function
 
-User Query
-↓
-Query Embedding
-↓
-FAISS Vector Retrieval
-↓
-Top-k Relevant Chunks
-↓
-Prompt Construction
-↓
-OpenAI LLM Generation
-↓
-Final Response
+A domain-specific scoring mechanism was introduced to improve retrieval precision.
 
-Additionally:
+Instead of using generic similarity search only, the system boosts important election and budget-related terms such as:
 
-* retrieved chunks are shown to users
-* similarity scores are logged
-* responses are grounded in source documents
+* Nana Akufo-Addo
+  n- John Mahama
+* NPP / NDC
+* inflation target
+* GDP growth
+* fiscal deficit
+* primary balance
+* regional election names
+
+This improves:
+
+* chunk relevance
+* answer accuracy
+* retrieval precision
+* hallucination reduction
+
+### Example
+
+User query:
+
+`What is the GDP growth target for 2025?`
+
+The system strengthens retrieval using terms like:
+
+`GDP growth projection economic growth target budget macroeconomic policy`
+
+This helps FAISS retrieve stronger supporting chunks.
 
 ---
 
-## Technology Stack
-
-### Backend
-
-* Python
+## Technologies Used
 
 ### Frontend
 
 * Streamlit
 
-### Embedding Model
+### Retrieval Layer
 
-* sentence-transformers/all-MiniLM-L6-v2
+* FAISS (Vector Search)
+* Sentence Transformers
+* NumPy
 
-### Vector Store
-
-* FAISS
-
-### LLM API
+### Generation Layer
 
 * OpenAI API
 
-### Deployment
+### Data Processing
 
-* Streamlit Community Cloud
-
-### Version Control
-
-* GitHub
+* Pandas
+* PyPDF
+* Python Dotenv
 
 ---
 
 ## Project Structure
 
-```bash id="f2m8qp"
+```text
 AI/
 │
 ├── app.py
 ├── build_index.py
 ├── requirements.txt
 ├── runtime.txt
-├── .env
+├── README.md
+├── manual_experiment_logs.md
 │
 ├── data/
 │   ├── election.csv
-│   └── Budget.pdf
+│   └── budget.pdf
+│
+├── src/
+│   ├── retrieval.py
+│   ├── generator.py
+│   ├── prompt.py
+│   └── embedding.py
 │
 ├── vector_store/
 │   ├── election_index.index
-│   ├── budget_index.index
 │   ├── election_metadata.pkl
+│   ├── budget_index.index
 │   └── budget_metadata.pkl
-│
-├── src/
-│   ├── loader.py
-│   ├── cleaner.py
-│   ├── chunking.py
-│   ├── embedding.py
-│   ├── retrieval.py
-│   ├── prompt.py
-│   └── generator.py
-│
-└── README.md
 ```
 
 ---
 
-## Installation Guide
+## Installation
 
-### Step 1: Clone Repository
+### Clone Repository
 
-```bash id="u7p4zx"
-git clone https://github.com/yourusername/yourrepository.git
-cd yourrepository
+```bash
+git clone https://github.com/AdzeyenaOpei/ai_10022200133.git
+cd ai_10022200133
 ```
 
----
+### Create Virtual Environment
 
-### Step 2: Create Virtual Environment
-
-```bash id="m3r9lv"
+```bash
 python -m venv venv310
 ```
 
-Activate it:
+### Activate Virtual Environment
 
-### Windows
+#### Windows
 
-```bash id="k8v2qt"
-venv310\Scripts\activate
+```bash
+.\venv310\Scripts\activate
 ```
 
-### Mac/Linux
+### Install Dependencies
 
-```bash id="z5n1wy"
-source venv310/bin/activate
-```
-
----
-
-### Step 3: Install Dependencies
-
-```bash id="q4x7mk"
+```bash
 pip install -r requirements.txt
 ```
 
----
+### Run Application
 
-### Step 4: Add OpenAI API Key
-
-Create a `.env` file:
-
-```env id="w9p3ra"
-OPENAI_API_KEY=your_openai_api_key_here
-```
-
----
-
-### Step 5: Build Vector Store
-
-```bash id="j2m6ks"
-python build_index.py
-```
-
-This creates:
-
-```text id="t7v4qn"
-vector_store/
-```
-
-containing FAISS index files.
-
----
-
-### Step 6: Run Application
-
-```bash id="c5r8zp"
+```bash
 streamlit run app.py
 ```
 
@@ -258,179 +189,50 @@ streamlit run app.py
 
 ## Deployment
 
-The application is deployed using:
+The application is deployed to the cloud for public access using Render / Streamlit hosting.
 
-### Streamlit Community Cloud
+This allows:
 
-Deployment includes:
-
-* GitHub integration
-* cloud hosting
-* public live URL
-* environment variable management
-* remote access for project evaluation
-
-### Important Deployment Requirements
-
-* `runtime.txt` for Python version compatibility
-* `requirements.txt`
-* uploaded `vector_store`
-* OpenAI API key in Streamlit Secrets
+* remote access
+* live demonstration
+* investor presentation
+* lecturer evaluation
 
 ---
 
-## Key Features
+## Manual Experiment Logs
 
-### Conversational Interface
+Manual testing was performed using multiple factual and comparative queries to evaluate:
 
-A WhatsApp-style chat interface for smooth and user-friendly interaction.
+* retrieval relevance
+* final answer correctness
+* chunk quality
+* hallucination control
 
----
+Examples tested include:
 
-### Retrieved Chunks Dropdown
+* inflation target for 2025
+* GDP growth target
+* election winners by region
+* fiscal deficit target
+* primary balance target
 
-Users can inspect the retrieved chunks used to generate answers.
-
-This improves:
-
-* transparency
-* explainability
-* trustworthiness
-
----
-
-### Persistent Chat Session
-
-Multiple questions can be asked in one session without losing context.
-
----
-
-### Clear Chat Function
-
-Allows users to reset the session easily.
-
----
-
-### Direct Answer Generation
-
-Responses are concise, accurate, and direct rather than long generic explanations.
-
----
-
-## Innovation Component
-
-### Domain-Specific Retrieval Improvement
-
-Instead of relying only on generic semantic similarity, the system improves retrieval by prioritizing:
-
-* election-specific queries
-* winner detection
-* year matching
-* policy-specific financial targets
-* highly relevant institutional entities
-
-This improves answer precision significantly compared to standard retrieval.
-
----
-
-## Manual Evaluation
-
-The system was tested using manual experiment logs across both datasets.
-
-Evaluation focused on:
-
-* chunk relevance
-* answer correctness
-* hallucination reduction
-* retrieval consistency
-* response quality
-
-Example test questions:
-
-* Who won Ghana’s 2020 election?
-* What is the inflation target for 2025?
-* What is Ghana’s GDP growth projection?
-
----
-
-## Challenges Encountered
-
-### FAISS Deployment Issues
-
-Cloud deployment initially failed due to:
-
-* Python version incompatibility
-* missing vector store files
-
-Solved using:
-
-* `runtime.txt`
-* forced Git tracking of vector files
-
----
-
-### Missing OpenAI Model Parameter
-
-Resolved by explicitly specifying:
-
-```python id="g6q1pt"
-model="gpt-4o-mini"
-```
-
----
-
-### Prompt Hallucination
-
-Improved through stricter prompt engineering and context restriction.
-
----
-
-## Future Improvements
-
-Possible future upgrades include:
-
-* memory-based RAG
-* user feedback loop
-* hybrid retrieval (keyword + vector search)
-* multi-document upload support
-* admin analytics dashboard
-* database scaling beyond FAISS
-* institutional multi-user deployment
-
----
-
-## GitHub Repository
-
-Repository Link:
-
-https://github.com/AdzeyenaOpei/ai_10022200133
-
----
-
-## Live Deployment
-
-Application Link:
-
-https://yourapp.streamlit.app
+Results showed strong performance for direct factual queries and improved retrieval quality after implementing domain-specific scoring.
 
 ---
 
 ## Author
 
-**Kobina Opei Junior**
+### Kobina Opei
 
 Academic City University
-Faculty of Computational Sciences and Informatics
 
+Introduction to Artificial Intelligence Project
 
----
-
-## Supervisor
-
-Godwin N. Danso
+RAG-Based Intelligent Assistant System
 
 ---
 
-## License
+## Final Note
 
-This project is developed strictly for academic and educational purposes.
+This project demonstrates how Retrieval-Augmented Generation can be applied to real institutional decision-making problems by combining vector search, document grounding, and large language models into a reliable AI assistant.
