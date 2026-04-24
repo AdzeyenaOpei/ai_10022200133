@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 from src.retrieval import retrieve_documents
 from src.prompt import build_prompt
 from src.generator import generate_response
@@ -618,6 +619,7 @@ if user_question:
                 answer = f"System Error: {str(e)}"
 
         st.markdown(answer)
+
 
         if docs:
             with st.expander(f"📄  {len(docs)} Source Chunk{'s' if len(docs) != 1 else ''} Retrieved  —  These are the document passages the answer was built from"):
