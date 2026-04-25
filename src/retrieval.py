@@ -1,8 +1,19 @@
 import faiss
 import pickle
 import numpy as np
+import datetime
 
 from src.embedding import embed_query
+
+# ─────────────────────────────────────────────
+# Logger
+# ─────────────────────────────────────────────
+def log(stage, content):
+    timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+    print(f"\n[{timestamp}] ---- {stage.upper()} ----")
+    print(content)
+    print("-" * 60)
+
 
 # ─────────────────────────────────────────────
 # Load Election Index
@@ -64,7 +75,14 @@ def detect_query_type(query):
 # Domain-Specific Scoring Function
 # ─────────────────────────────────────────────
 def retrieve_documents(query, top_k=5):
+
+    # Stage 1 - Log original query
+    log("STAGE 1 - QUERY RECEIVED", query)
+
     query_type = detect_query_type(query)
+
+    # Stage 2 - Log detected query type
+    log("STAGE 2 - QUERY TYPE DETECTED", query_type)
 
     # Automatic Query Expansion + Domain-Specific Scoring
     expanded_query = query
@@ -126,6 +144,9 @@ def retrieve_documents(query, top_k=5):
                 " gross international reserves target budget statement"
             )
 
+    # Stage 3 - Log expanded query
+    log("STAGE 3 - EXPANDED QUERY", expanded_query)
+
     # Convert query to embedding vector
     query_vector = np.array(
         [embed_query(expanded_query)]
@@ -153,5 +174,14 @@ def retrieve_documents(query, top_k=5):
         if idx != -1:
             results.append(docs[idx])
             scores.append(float(dist))
+
+    # Stage 4 - Log retrieved chunks
+    log("STAGE 4 - RETRIEVED CHUNKS", 
+        "\n".join([f"Chunk {i+1}: {r[:100]}..." 
+                   for i, r in enumerate(results)]))
+
+    # Stage 5 - Log similarity scores
+    log("STAGE 5 - SIMILARITY SCORES", 
+        str(scores))
 
     return results, scores
