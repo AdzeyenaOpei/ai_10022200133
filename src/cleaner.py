@@ -10,6 +10,6 @@ def clean_csv(df):
 
 
 def clean_text(text):
-    text = text.replace(" ", " ")
+    text = text.replace("", " ")
     text = " ".join(text.split())
     return text
